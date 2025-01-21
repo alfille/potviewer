@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="description" content="Ceramic artist (Pottery) database by Paul H Alfille. Runs standalone and connected. Very visual and simple"/>
+        <meta name="description" content="Ceramic artist (Pottery) database viewer by Paul H Alfille."/>
         <meta name="theme-color" content="#172bae"/>
-        <title>PotHolder &mdash; Ceramic Production Tracker</title>
+        <title>PotViewer &mdash; Ceramic Artist's Work</title>
         <link rel="stylesheet" media="screen" href="style/base.css">
         <link rel="stylesheet" media="print" href="style/print.css" />
         <link rel="manifest" href="manifest.json" />
@@ -23,15 +23,11 @@
                 <div id="buttonheader">
                     <!-- top: MainMenu-->
                     <div class="MainMenu topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
                     <!-- top: Advanced Administration Developer -->
                     <div class= "Advanced Administration Developer topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
@@ -42,38 +38,23 @@
                     </div>
                     <!-- top: PotMenu -->
                     <div class= "PotMenu topButtons pageOverlay">
-                        <button type="button" class="divbutton Camera" title="Use camera -- add to this piece" onClick="globalPot.pushPixButton()">Add Photo &#128247;</button>            
-                        <button type="button" class="divbutton Camera" title="Get image -- add to this piece" onClick="globalPot.pushGalleryButton()" >Add Gallery &#128444;</button>            
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: AllPieces Orphans -->
-                    <div class="AllPieces Orphans topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
+                    <!-- top: AllPieces -->
+                    <div class="AllPieces topButtons pageOverlay">
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
-                        <button type="button" class="divbutton" onclick="globalPage.show( 'PotNew' )" title="Create a new piece">Add Piece</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
                     <!-- top: ListSeries ListStage ListKiln ListClay ListGlaze ListForm ListConstruction -->
                     <div class="ListSeries ListStage ListKiln ListClay ListGlaze ListForm ListConstruction topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
-                        <button type="button" class="divbutton" onclick="globalPage.show( 'PotNew' )" title="Create a new piece">Add Piece</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink('ListGroup')">Help</button>
                     </div>
-                    <!-- top: AssignPic -->
-                    <div class="AssignPic topButtons pageOverlay">
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
-                    <!-- top: ListMenu MakeURL StructMenu StructGeneralPot StructImages StructDatabaseInfo StructRemoteUser StructSettings -->
-                    <div class="ListMenu topButtons pageOverlay MakeURL StructMenu StructGeneralPot StructImages StructDatabaseInfo StructRemoteUser StructSettings">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
+                    <!-- top: ListMenu MakeURL -->
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink('StructMenu')">Help</button>
@@ -83,26 +64,15 @@
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: PotNew -->
-                    <div class="PotNew topButtons pageOverlay">
-                        <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
-                        <button type="button" class="divbutton discarddata return" onclick="globalPage.show( 'back' )" title="Abandon this task">Cancel</button>
-                        <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
                     <!-- top: PotData -->
                     <div class="PotData topButtons pageOverlay">
-                        <button type="button" class="divbutton Camera" title="Use camera -- add to this piece" onClick="globalPot.pushPixButton()">Add Photo &#128247;</button>            
-                        <button type="button" class="divbutton Camera" title="Get image -- add to this piece" onClick="globalPot.pushGalleryButton()" >Add Gallery &#128444;</button>            
                         <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton discarddata return" onclick="globalPage.show( 'back' )" title="Abandon this task">Cancel</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: PotEdit PotPix Settings -->
-                    <div class="PotData PotEdit topButtons PotPix Settings pageOverlay">
-                        <button type="button" class="divbutton Camera" title="Use camera -- add to this piece" onClick="globalPot.pushPixButton()">Add Photo &#128247;</button>            
-                        <button type="button" class="divbutton Camera" title="Get image -- add to this piece" onClick="globalPot.pushGalleryButton()" >Add Gallery &#128444;</button>            
+                    <!-- top: PotEdit Settings -->
+                    <div class="PotData PotEdit topButtons Settings pageOverlay">
                         <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Back</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
@@ -120,8 +90,6 @@
                     </div>
                     <!-- top: ErrorLog -->
                     <div class="ErrorLog topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
                         <button type="button" class="divbutton delete" onclick="globalLog.clear()">Erase Log</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
@@ -135,8 +103,6 @@
                     </div>
                     <!-- top: DatabaseInfo -->
                     <div class= "DatabaseInfo topButtons pageOverlay">
-                        <button type="button" class="divbutton NewCamera" title="Use camera -- new piece or assign later" onClick="globalPot.pushPixButton()">New Photo &#128247;</button>            
-                        <button type="button" class="divbutton NewCamera" title="Get image -- new piece or assign later" onClick="globalPot.pushGalleryButton()" >New Gallery &#128444;</button>            
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
@@ -165,7 +131,6 @@
                     <div id="MainMenuContent" class="MainMenuRow" >
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'ListMenu' )">Lists</button>
-                            <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'PotNew' )">New Piece</button>
                             <button type="button" class="divbutton"  style="visibility:hidden"> </button>
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'Help' )">Instructions</button>
                         </div>
@@ -183,7 +148,6 @@
                     <div id="ListMenuContent" class="MainMenuRow" >
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'AllPieces' )">All Pieces</button>
-                            <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'PotNew' )">New Piece</button>
                         </div>
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'ListSeries' )">Series</button>
@@ -223,8 +187,8 @@
                     </div>
                 </div>
             </div>
-            <!-- body: AllPiecess Orphans -->
-            <div class="AllPieces Orphans pageOverlay">
+            <!-- body: AllPiecess -->
+            <div class="AllPieces pageOverlay">
                 <div id="AllPiecesContent" >
                     <table id="AllPieces"></table>
                 </div>
@@ -234,18 +198,6 @@
                 <div id="MultiTableContent" >
                 </div>
             </div>
-            <!-- body: AssignPic -->
-            <div class="AssignPic pageOverlay">
-                <fieldset>
-                    <legend>New Piece</legend>
-                    <button type="button" class="divbutton" onclick="globalPot.AssignToNew()">New Piece</button>
-                </fieldset>
-                <fieldset>
-                    <legend>Existing Piece</legend>
-                    <table id="AssignPic"></table>
-                </fieldset>
-            </div>
-
             <!-- body: SearchList -->
             <div class="SearchList pageOverlay">
                 <span class="ContentTitle">Search for...</span>
@@ -257,8 +209,8 @@
                     <table id="SearchList"></table>
                 </div>
             </div>
-            <!-- body: PotNew PotEdit PotPix DatabaseInfo RemoteDatabaseInput Settings -->
-            <div class="PotData PotNew PotEdit PotPix PotPixLoading DatabaseInfo RemoteDatabaseInput Settings pageOverlay">
+            <!-- body: PotEdit DatabaseInfo RemoteDatabaseInput Settings -->
+            <div class="PotData PotEdit PotPixLoading DatabaseInfo RemoteDatabaseInput Settings pageOverlay">
                 <span class="ContentTitle ContentTitleHidden">Loading...</span>
                 <div id="PotDataContent" ></div>
             </div>
@@ -269,12 +221,9 @@
                     <div id="PotMenuContent" class="MainMenuRow" >
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'PotEdit' )">Information</button>
-                            <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'PotPix' )" title="Photo gallery">Images</button>
                         </div>
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'PotPrint' )" title="Print this piece's information">Print</button>
-                            <button type="button" class="divbutton"  style="visibility:hidden"> </button>
-                            <button type="button" class="divbutton delete MainItalic" onclick="globalPot.del()" title="Delete this piece from the database">Delete Piece</button>
                         </div>
                     </div>
                 </div>
@@ -332,51 +281,14 @@
                     <span class="ContentTitle">Advanced</span>
                     <div class="MainMenuRow">
                         <div class="PotProcButtons">
-                            <button type="button" class="divbutton" onclick="globalPage.show( 'Orphans' )" title="Extra data fields">Orphan Fields</button>
-                            <button type="button" class="divbutton" onclick="globalPage.show( 'StructMenu' )" title="Database field structure">Database Fields</button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- body: StructMenu -->
-            <div class="StructMenu pageOverlay">
-                <span class="ContentTitle">Field Structure</span>
-                <div id="StructMenuContent" class="MainMenuRow">
-                    <div class="PotProcButtons">
-                        <span class="ContentTitle">Dabatase</span>
-                        <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'StructGeneralPot' )" title="Piece data except image notes">General Properties</button>
-                        <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'StructImages' )" title="Image comments">Images</button>
-                    </div>
-                    <div class="PotProcButtons">
-                        <span class="ContentTitle">Administrative</span>
-                        <button type="button" class="divbutton" onClick="globalPage.show( 'StructSettings' )" title="Display settings">Display Settings</button>
-                        <button type="button" class="divbutton" onClick="globalPage.show( 'StructRemoteUser' )" title="User credential structure">User Credentials</button>
-                        <button type="button" class="divbutton" onClick="globalPage.show( 'StructDatabaseInfo')" title="Read-only database info">Database Info</button>
-                    </div>
-                </div>
-            </div>
-            <!-- body: StructGeneralPot StructImages StructDatabaseInfo StructRemoteUser  StructSettings -->
-            <div class="StructGeneralPot StructImages StructDatabaseInfo StructRemoteUser  StructSettings pageOverlay">
-                <span class="ContentTitle" id="StructShowTitle"></span>
-                <div id="StructShowContent">
-                    <pre id="struct_json"></pre>
                 </div>
             </div>
         </div>
     </main>
     </div>
-        <!-- picture cropping page -->
-        <div id="crop_page">
-            <canvas id="under_canvas" width=350px height=600px></canvas>
-            <canvas id="crop_canvas" width=350px height=600px></canvas>
-            <div id="crop_buttons">
-                <span class="Darray_span">Drag edges</span>
-                <button type="button" class="divbutton" onclick="globalCropper.ok()" title="Crop complete">Ok</button>
-                <button type="button" class="divbutton" onclick="globalCropper.full()" title="Restore full image">Full</button>
-                <button type="button" class="divbutton" onclick="globalPage.helpLink('Crop')">Help</button>
-                <button type="button" class="divbutton return" onclick="globalCropper.cancel()" title="No changes">Cancel</button>
-            </div>
-        </div>
+        <!-- print page -->
         <div class="print_screen">
             <div class="MainMenuRow">
                 <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Back</button>
@@ -389,8 +301,6 @@
         </div>
         <!-- copyable parts -->
         <div id="templates" class="pageOverlay">
-            <input type="file" id="HiddenPix" accept="image/*" class="imageBar" onchange="globalPot.newPhoto()" capture="environment">
-            <input type="file" id="HiddenGallery" accept="image/*" class="imageBar" onchange="globalPot.newPhoto()" multiple>
             <img id="NoPicture" src="images/NoPicture.png" loading="lazy"/>
             <img id="LogoPicture" src="images/wheel.png" loading="lazy" />
             <canvas id="thumbnail" width=100 height=100>

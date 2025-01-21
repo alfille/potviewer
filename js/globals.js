@@ -255,7 +255,6 @@ globalThis. globalPot = null ;
 globalThis. globalStorage = null ;
 globalThis. globalSearch = null;
 globalThis. globalThumbs = null;
-globalThis. globalCropper = null ;
 globalThis. globalSettings = {} ;
 
 globalThis. rightSize = ( imgW, imgH, limitW, limitH ) => {

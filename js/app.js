@@ -42,9 +42,6 @@ class Pagelist {
         // hide Thumbnails
         document.getElementById("MainPhotos").style.display="none";
         
-        // hide Crop
-        document.getElementById("crop_page").style.display="none" ;
-        
         this.show_content();
     }
     
@@ -65,8 +62,6 @@ new class Advanced extends PagelistThumblist {}() ;
 new class Administration extends PagelistThumblist {}() ;
 
 new class Developer extends PagelistThumblist {}() ;
-
-new class StructMenu extends PagelistThumblist {}() ;
 
 new class DatabaseInfo extends Pagelist {
     show_content() {
@@ -150,66 +145,6 @@ new class AllPieces extends Pagelist {
         .catch( (err) => globalLog.err(err) );
     }
 }() ;
-
-new class Orphans extends Pagelist {
-    show_content() {
-        globalPot.unselect() ;
-        new StatBox() ;
-        document.getElementById("MainPhotos").style.display="block";
-        globalTable = new OrphanTable();
-        globalPot.getAllIdDoc()
-        .then( (docs) => globalTable.fill(docs.rows ) )
-        .catch( (err) => globalLog.err(err) );
-    }
-}() ;
-
-new class AssignPic extends Pagelist {
-    show_content() {
-        globalPage.forget(); // don't return here
-        // Title adjusted to source and number
-        if ( globalPot.pictureSource.files.length == 0 ) {
-            // No pictures taken/chosen
-            return ;
-        } else if (globalPot.pictureSource.id=="HiddenPix") {
-            new TextBox( `New Photo. Assign to which piece?` ) ;
-        } else {
-            if (globalPot.pictureSource.files.length == 1 ) {
-                new TextBox( "1 image selected. Assign to which piece?" ) ;
-            } else {
-                new TextBox( `${globalPot.pictureSource.files.length} images selected. Assign to which piece?` ) ;
-            }
-        }
-        // make table
-        globalTable = new AssignTable();
-        globalPot.getAllIdDoc()
-        .then( (docs) => globalTable.fill(docs.rows ) )
-        .catch( (err) => globalLog.err(err) );
-    }
-}() ;
-
-class StructShow extends Pagelist {
-    // "struct_name" from derived classes
-    // "struct_title" from derived classes
-    constructor( structname, structtitle ) {
-		super() ;
-		this.struct_name = structname ;
-		this.struct_title = structtitle ;
-	}
-
-    show_content() {
-        globalPot.unselect() ;
-        new TextBox("Field Structure") ;
-        document.getElementById("MainPhotos").style.display="block";
-        document.getElementById("StructShowTitle").innerText=this.struct_title ?? "" ;
-        document.getElementById("struct_json").innerText = JSON.stringify( this.struct_name, null, 2 ) ;
-    }
-}
-
-new class StructGeneralPot extends StructShow {}( structData.Data, "Data Fields") ;
-new class StructImages extends StructShow {}( structData.Images, "Image Fields") ;
-new class StructDatabaseInfo extends StructShow {}( structDatabaseInfo, "Database Metadata") ;
-new class StructRemoteUser extends StructShow {}( structRemoteUser, "User Credentials") ;
-new class StructSettings extends StructShow {}( structSettings, "Display Settings") ;
 
 class ListGroup extends Pagelist {
 	constructor( fieldname ) {
@@ -312,44 +247,12 @@ new class ListMenu extends Pagelist {
     }
 }() ;
 
-new class PotNew extends Pagelist {
-    // record doesn't exist -- make one
-    show_content() {
-        globalPage.forget();
-        new TextBox("New Piece");
-        if ( globalPot.isSelected() ) {
-            // existing but "new"
-            globalDatabase.db.get( potId )
-            .then( doc => globalPotData = new PotNewData( doc, structData.Data ) )
-            .catch( err => globalLog.err(err) ) ;
-        } else {
-            globalPotData = new PotNewData( globalPot.create(), structData.Data ) ;
-        }
-    }
-}() ;
-
 new class PotEdit extends Pagelist {
     show_content() {
         if ( globalPot.isSelected() ) {
             globalDatabase.db.get( potId )
             .then( (doc) => globalPotData = new PotData( doc, structData.Data ))
              .catch( (err) => {
-                globalLog.err(err);
-                globalPage.show( "back" );
-                });
-
-        } else {
-            globalPage.show( "back" );
-        }
-    }
-}() ;
-
-new class PotPix extends Pagelist {
-    show_content() {
-        if ( globalPot.isSelected() ) {
-            globalDatabase.db.get( potId )
-            .then( (doc) => globalPotData = new PotData( doc, structData.Images ))
-            .catch( (err) => {
                 globalLog.err(err);
                 globalPage.show( "back" );
                 });
@@ -546,13 +449,6 @@ window.onload = () => {
     // Stuff into history to block browser BACK button
     window.history.pushState({}, '');
     window.addEventListener('popstate', ()=>window.history.replaceState({}, '') );
-
-    // Service worker (to manage cache for off-line function)
-    if ( navigator && ('serviceWorker' in navigator) ) {
-        navigator.serviceWorker
-        .register('/sw.js')
-        .catch( err => globalLog.err(err,"Service worker registration") );
-    }
 
     // Settings
     globalSettings = Object.assign( {
@@ -770,29 +666,6 @@ class Pot { // convenience class
            });
     }
    
-    del() {
-        if ( this.isSelected() ) {        
-            globalDatabase.db.get( potId )
-            .then( (doc) => {
-                // Confirm question
-                if (confirm(`WARNING -- about to delete this piece\n piece type << ${doc?.type} >> of series << ${doc.series} >>\nPress CANCEL to back out`)==true) {
-                    return globalDatabase.db.remove(doc) ;
-                } else {
-                    throw "Cancel";
-                }           
-            })
-            .then( _ => globalThumbs.remove( potId ) )
-            .then( _ => this.unselect() )
-            .then( _ => globalPage.show( "back" ) )
-            .catch( (err) => {
-                if (err != "Cancel" ) {
-                    globalLog.err(err);
-                    globalPage.show( "back" ) ;
-                }
-            });
-        }
-    }
-
     getAllIdDoc() {
         const doc = {
             startkey: Id_pot.allStart(),
@@ -835,94 +708,6 @@ class Pot { // convenience class
         new BlankBox();
     }
 
-    pushPixButton() {
-        this.pictureSource = document.getElementById("HiddenPix");
-        this.pictureSource.click() ;
-    }
-
-    pushGalleryButton() {
-        this.pictureSource=document.getElementById("HiddenGallery");
-        this.pictureSource.click() ;
-    }
-
-    save_pic( pid=potId, i_list=[] ) {
-        if ( i_list.length == 0 ) {
-            return Promise.resolve(true) ;
-        }
-        const f = i_list.pop() ;
-        return globalDatabase.db.get( pid )
-        .then( doc => {
-            if ( !("images" in doc ) ) {
-                doc.images = [] ;
-            }
-            if ( doc.images.find( e => e.image == f.name ) ) {
-                // exists, just update attachment
-                return globalDatabase.db.putAttachment( pid, f.name, doc._rev, f, f.type )
-                    .catch( err => globalLog(err)) ;
-            } else {
-                // doesn't exist, add images entry as well (to front)
-                doc.images.unshift( {
-                    image: f.name,
-                    comment: "",
-                    date: (f?.lastModifiedDate ?? (new Date())).toISOString(),
-                    } );
-                return globalDatabase.db.put( doc )
-                    .then( r => globalDatabase.db.putAttachment( r.id, f.name, r.rev, f, f.type ) ) ;
-            }
-            })
-        .then( _ => this.save_pic( pid, i_list ) ) ; // recursive
-    }
-                  
-
-    newPhoto() {
-        if ( ! globalPot.isSelected() ) { 
-            globalPage.show("AssignPic") ;
-            return ;
-        }
-        const i_list = [...this.pictureSource.files] ;
-        if (i_list.length==0 ) {
-            return ;
-        }
-        globalPage.show("PotPixLoading");
-
-        this.save_pic( potId, i_list )
-        .then( () => globalThumbs.getOne( potId ) )
-        .then( () => globalPage.add( "PotMenu" ) )
-        .then( () => globalPage.show("PotPix") )
-        .catch( (err) => {
-            globalLog.err(err);
-            })
-        .finally( () => this.pictureSource.value = "" ) ;
-    }
-    
-    AssignToNew() {
-        const doc = this.create() ;
-        //console.log("new",doc);
-        globalDatabase.db.put( doc )
-        .then( response => this.AssignPhoto( response.id ) )
-        .catch( err => {
-            globalLog(err);
-            globalPage.show('MainMenu');
-        }) ;
-    }
-            
-    AssignPhoto(pid = potId) {
-        const i_list = [...this.pictureSource.files] ;
-        if (i_list.length==0 ) {
-            return ;
-        }
-        globalPage.show("PotPixLoading");
-        globalPot.select( pid )
-        .then( _ => this.save_pic( pid, i_list ) )
-        .then( _ => globalThumbs.getOne( potId ) )
-        .then( _ => globalPage.add("PotMenu" ) )
-        .then( _ => globalPage.show("PotPix") )
-        .catch( (err) => {
-            globalLog.err(err);
-            })
-        .finally( () => this.pictureSource.value = "" ) ;
-    }
-    
     showPictures(doc) {
         // doc alreaady loaded
         const pix = document.getElementById("PotPhotos");
@@ -1503,48 +1288,6 @@ class PotTable extends ThumbTable {
     }
 }
 
-class OrphanTable extends PotTable {
-    constructor(
-        collist=["_id","fields" ],
-        tableId="AllPieces",
-        aliaslist=
-            [
-                ["Thumbnail","Picture", (doc)=> `${doc.artist}`],
-                ['fields','Orphans',(doc)=>this.ofields(doc)],
-                ['_id','ID',(doc)=>`${doc._id}`]
-            ] ) {
-        
-        super( collist, tableId, aliaslist ) ;
-
-        // list of good fields
-        this.gfields = [ 
-            structData.Data.map( s => s.name ),
-            structData.Images.map( s => s.name ),
-            "author",
-            ].flat();
-    }
-
-    ofields(doc) {
-        return Object.keys(doc)
-            .filter( k=>k[0] != '_' )
-            .filter( k=>!(this.gfields.includes(k)) )
-            .map( k=> `${k}: ${doc[k]}` )
-            .join("\n") ;
-    }
-
-    selectId() {
-        return potId;
-    }
-
-    selectFunc(id) {
-        globalPot.select(id) ;
-    }
-
-    editpage() {
-        globalPage.show("PotMenu");
-    }
-}
-
 class MultiTable {
     constructor( cat_func, collist=["type","series","start_date" ], aliaslist=[] ) {
         // cat_func outputs a category array:
@@ -1637,34 +1380,6 @@ class MultiTable {
     }
 }
 
-class AssignTable extends ThumbTable {
-    constructor(
-        collist=["type","series","start_date" ],
-        tableId="AssignPic",
-        aliaslist=
-            [
-                ["Thumbnail","Picture", (doc)=> `${doc.artist}`],
-                ['start_date','Date',null],
-                ['series','Series',null],
-                ['type','Form',null]
-            ] ) {
-        super( collist, tableId, aliaslist ) ;
-    }
-
-    selectId() {
-        return potId;
-    }
-
-    selectFunc(id) {
-        globalPot.select(id) ;
-    }
-
-    editpage() {
-        globalPot.AssignPhoto();
-    }
-}
-
-
 class SearchTable extends ThumbTable {
     constructor() {
         super( 
@@ -1725,7 +1440,7 @@ class Search { // singleton class
 
         this.structStructure= ({
                         PotEdit:    structData.Data,
-                        PotPix:     structData.Images,
+                        PotMenu:     structData.Images,
                         });
 
         // Extract fields fields
