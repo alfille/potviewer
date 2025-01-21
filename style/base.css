@@ -1,0 +1,505 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+#headerbox {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: inherit;
+}
+.headerboxlink img {
+  color: blue ;
+  border-style: groove;
+  border-width: 4px;
+  border-color: lightblue;
+  margin: 2px 0 2px 2px;
+}
+#titlebox {
+  width: calc( 100% - 4px);
+  background: #D5CCFF;
+  color: black ;
+  height: 1em;
+  text-align: center;
+  padding: 3px 3px 8px 3px;
+}
+.allGroup {
+  background-color: #edf6af;
+}
+table {
+  border-collapse: collapse;
+  width: 100% ;
+}
+th, td {
+  border: 1px solid black;
+  padding: 4px;
+}
+th {
+  cursor: pointer;
+}
+th:hover {
+  background:  yellow;
+}
+tr.head {
+  background: #CCFFFF ;
+}
+tr:hover {
+  background: lightyellow ;
+}
+tr {
+  background: #CCCCFF ;
+  min-height: 1em;
+}
+li {
+  background: #9edaa0 ;
+  min-height: 1em;
+}
+tr:nth-child(odd), li:nth-child(odd) {
+  margin: 4px 0 0 0;
+  border-style: double none none none ;
+  padding: 4px 0 0 0;
+  background: #E6F2FF ;
+}
+tr.choice, li.choice, div.choice {
+  background: gold !important;
+}
+tr:nth-child(odd):hover, li:nth-child(even):hover {
+  background: lightyellow ;
+}
+.print_screen {
+    color: white;
+    }
+
+.PotData li {
+  background: #E6F2FF ;
+  margin: 0 0 0 0;
+  border-style: double none none none ;
+  padding: 4px;
+}
+
+.PotData li:nth-child(odd) {
+  background: #CCCCFF ;
+}
+
+#ErrorLogContent li {
+  background: #c7G.db3a;
+}
+
+#ErrorLogContent li:nth-child(even) {
+  background: #ebff53;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.divbutton, a {
+  margin: 1px;
+  padding: 3px;
+  border: 3px;
+  display: inline-block;
+  background: #3366FF;
+  font-size: 18px;
+  vertical-align: baseline;
+  font-family: inherit;
+  color: white;
+  border-style: groove ;
+  -webkit-appearance: none;
+  /*-moz-appearance: none;*/
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+.divbutton:disabled {
+  color: grey;
+  background: #9eb6ff ;
+}
+.divbutton:hover, a:hover {
+  color: yellow;
+}
+
+.NewCamera {
+  color: black;
+  background: #3cebcd;
+}
+.Camera {
+  background: purple;
+}
+
+.ContentTitle {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+  color: white;
+  padding: 4px;
+}
+.click_pic {
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-block;
+  border-radius: 5px;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 75px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(23,43,174);
+}
+
+/* Modal Content (image) */
+.modal_content {
+  margin: auto;
+  display: block;
+}
+
+/* Caption of Modal Image */
+#modal_caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 800px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 100px;
+}
+
+/* Add Animation */
+.modal_content, #modal_caption {  
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform: scale(0.1)} 
+  to {transform: scale(1)}
+}
+
+/* The Close Button */
+.modal_button {
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  background-color: rgba(0,0,0,0);
+}
+
+#modal_close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+}
+
+#modal_down {
+  position: absolute;
+  top: 5px;
+  left: 35px;
+}
+
+.modal_button:hover,
+.modal_button:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.multiCat, .fill_show_data {
+  font-weight: bold;
+  color: black;
+  display: inline-block;
+}
+    
+.fill_show_label {
+  font-weight: italic;
+  color: black;
+  display: inline-block;
+  text-align: left;
+}
+    
+.yearnumber {
+  font-weight: normal;
+  display: inline-block;
+}
+
+.MultiFieldset {
+  background-color: #949ddf;
+}
+    
+body {
+  font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.4em;
+  background: #172bae;
+  color: #250f0f;
+  width: 100%;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+#potholderbody {
+  background: #949ddf;
+  margin: 0 0 0 0;
+  border: 1px solid #ccc;
+  position: relative;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+.pageOverlay {
+  display: none ;
+  width: 100%
+}
+
+.imageBar {
+  display:none;
+}
+.edit_data, .search {
+  display: inline-block;
+  background: yellow;
+  color: black;
+  border: 1px solid red;
+  margin: 1px 3px 1px 1px ;
+}
+.edit_data:disabled {
+  background: #ffffcc;
+  color: grey;
+}
+.return {
+  background: green;
+}
+.delete {
+  background: #b00505 !important;
+  float: right;
+}
+#searchbar {
+    background: "darkblue";
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+#searchtext {
+    background: white;
+    font-size: 2em;
+    flex-grow: 1;
+}
+#searchclick {
+  float: right ;
+  color: black ;
+  display: inline-block;
+  background: yellow;
+  flex-grow: 0;
+}
+#splash_screen {
+  display: block ;
+  background: #3366CC;
+}
+
+legend {
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: bold;
+}
+
+.buttonmenu {
+  display: flex ;
+  background: #bcbce9 ;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column ;
+  width: 100%;
+  padding: 1em;
+}
+.PotDataContent {
+    width: 100%;
+}
+
+.Darray_table {
+  border: 3px solid black;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  margin-left: 4px;
+}
+.Darray_div {
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+.Darray_caption {
+  font-size: 1.5em;
+  background: lightblue;
+  padding-top: 10px;
+}
+.Darray_li1 {
+  font-size: 1.5em ;
+}
+.Darray_caption button, .Darray_div button {
+  font-size: .8em;
+  margin: 1px;
+  padding: 3px;
+  border: 3px;
+  background: #3366FF;
+  vertical-align: baseline;
+  font-family: inherit;
+  color: white;
+  border-style: groove ;
+}
+.Darray_up, .Darray_down {
+  background-color: blue;
+  color: white;
+}
+.Darray_up:hover, .Darray_down:hover {
+  background-color: white;
+  color: blue;
+}
+#FirstTimeContent p {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.MainMenuRow{
+  display: flex;
+  color: white;
+  background: inherit;
+  padding-top: 5px;
+  flex-direction: row ;
+  justify-content: space-around;
+}
+.MainBold {
+  font-weight: bold;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.MainItalic {
+  font-style: italic;
+  color: white;
+}
+#PotPhotos, #MainPhotos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;  
+  align-items: flex-start;
+}
+.MainPhoto {
+  border: 1px solid white;
+  margin:  0px 5px 0px 0px;
+}
+#TopLeftImage {
+  width: 100px;
+  height: 100px;
+  }
+.PotProcButtons {
+  display: flex;
+  flex-direction: column;
+}
+#InvalidPotContent {
+    padding: 5px ;
+}
+.PotData input {
+    background: #F6F6F6 ;
+    size: 35 ;
+}
+.PotData textarea {
+    background: #F6F6F6 ;
+    vertical-align: top;
+    rows: 3;
+    cols: 35;
+}
+.work_screen {
+    display: none ;
+    max-width: 550px ;
+}
+.picture_screen {
+    display: none ;
+    width: 100% ;
+}
+
+@media screen and (min-width: 712px) {
+.picture_screen {
+    display: none;
+    position: absolute;
+    top: 0px;
+    margin-left: 560px;
+    width: auto;
+    }
+}
+
+.content_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex:start;
+}
+
+@media screen and (max-height: 500px) {
+.MainMenuRow {
+    flex:1;
+    }
+.content_box {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    }
+}
+
+#footer {
+  color: darkblue;
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 10px;
+  text-align: center;
+  font-size: 12px;
+}
+#footerflex {
+  display: flex;
+  color: white;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#syncstatus, #userstatus {
+  background: lightblue;
+  border: 4px;
+  width: 8em;
+}
+.potholderLogo {
+  max-height:100px;
+  width:auto;
+}
+.splashImg {
+  height:400px;
+  width:auto;
+}
+#crop_buttons {
+  color: white;
+  position: absolute;
+  top: 605px;
+  left: 20px;
+}
+#under_canvas, #crop_canvas {
+  position: absolute;
+  display: block;
+  top: 0px;
+  left: 0px;
+}
+#struct_json {
+  color: white;
+  background: black;
+  padding: 1em;
+  tab-size: 4;
+}

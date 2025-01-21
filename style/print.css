@@ -1,0 +1,46 @@
+.work_screen, .MainMenuRow {
+    display: none !important ;
+}
+html, body {
+	background: white ;
+	color: black;
+}
+.print_pot {
+	background: white ;
+	color: black;
+	-webkit-print-color-adjust:exact !important;
+	print-color-adjust:exact !important;
+}
+
+.print_pic {
+	max-width: 80%;
+	max-height: 80%;
+}
+
+table, th, td {
+  border: 1px solid;
+  border-collapse: collapse;
+}
+ul {
+  list-style-type: none;
+}
+tr {
+  background: white ;
+  min-height: 1em;
+}
+li {
+  background: white ;
+  min-height: 1em;
+}
+li:nth-child(odd) {
+  margin: 4px 0 0 0;
+  padding: 4px 0 0 0;
+  background: #EEEEEE ;
+}
+.print_pic {
+  max-width: 4in;
+  display: inline-block;
+  height: auto ;
+  border-radius: 5px;
+}
+
