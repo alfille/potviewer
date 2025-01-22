@@ -26,12 +26,6 @@
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: Advanced Administration Developer -->
-                    <div class= "Advanced Administration Developer topButtons pageOverlay">
-                        <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Return</button>
-                        <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
                     <!-- top: FirstTime -->
                     <div class="FirstTime topButtons pageOverlay">
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
@@ -54,7 +48,8 @@
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink('ListGroup')">Help</button>
                     </div>
-                    <!-- top: ListMenu MakeURL -->
+                    <!-- top: ListMenu -->
+                    <div class="ListMenu topButtons pageOverlay">
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink('StructMenu')">Help</button>
@@ -78,10 +73,6 @@
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: PotPixLoading -->
-                    <div class="topButtons PotPixLoading pageOverlay">
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
                     <!-- top: InvalidPiece -->
                     <div class="InvalidPiece topButtons pageOverlay">
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'AllPieces' )">Return</button>
@@ -101,17 +92,10 @@
                         <button type="button" class="divbutton return" onclick="globalPotData.back()" title="Do NOT save changes">Cancel</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
-                    <!-- top: DatabaseInfo -->
-                    <div class= "DatabaseInfo topButtons pageOverlay">
-                        <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Return</button>
-                        <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
                     <!-- top: RemoteDatabaseInput -->
                     <div class="RemoteDatabaseInput topButtons pageOverlay">
                         <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )">Cancel</button>
-                        <button type="button" class="divbutton" onclick="globalPage.show( 'MakeURL' )">Web Link</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
                 </div>
@@ -131,12 +115,11 @@
                     <div id="MainMenuContent" class="MainMenuRow" >
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'ListMenu' )">Lists</button>
-                            <button type="button" class="divbutton"  style="visibility:hidden"> </button>
                             <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'Help' )">Instructions</button>
                         </div>
                         <div class="PotProcButtons">
                             <button type="button" class="divbutton MainItalic" onclick="globalPage.show( 'RemoteDatabaseInput' )">Name/Password</button>
-                            <button type="button" class="divbutton delete MainItalic" onclick="globalPage.show( 'Advanced' )">Advanced Options</button>
+                            <button type="button" class="divbutton MainItalic" onclick="globalPage.show( 'Settings' )" title="Preferences for display">Settings</button>
                         </div>
                     </div>
                 </div>
@@ -175,18 +158,6 @@
                     <button type="button" class="divbutton MainBold" onclick="globalPage.show( 'RemoteDatabaseInput' )">Setup</button>
                 </div>
             </div>
-            <!-- body: MakeURL -->
-            <div class="MakeURL pageOverlay">
-                <div class="content_box">   
-                    <span class="ContentTitle">Web Link</span>
-                    <div id="MakeURLContent" class="buttonmenu">
-                        <canvas id="qr" width=300 height=300></canvas>
-                        <hr>
-                        <a class="divbutton MainBold" id="MakeURLtext">Link</a>
-                        <button type="button" class="divbutton MainBold" id="CopyURLtext" onclick="globalPage.copy_to_clip()">Copy to Clipboard</button>
-                    </div>
-                </div>
-            </div>
             <!-- body: AllPiecess -->
             <div class="AllPieces pageOverlay">
                 <div id="AllPiecesContent" >
@@ -209,8 +180,8 @@
                     <table id="SearchList"></table>
                 </div>
             </div>
-            <!-- body: PotEdit DatabaseInfo RemoteDatabaseInput Settings -->
-            <div class="PotData PotEdit PotPixLoading DatabaseInfo RemoteDatabaseInput Settings pageOverlay">
+            <!-- body: PotEdit RemoteDatabaseInput Settings -->
+            <div class="PotData PotEdit RemoteDatabaseInput Settings pageOverlay">
                 <span class="ContentTitle ContentTitleHidden">Loading...</span>
                 <div id="PotDataContent" ></div>
             </div>
@@ -242,48 +213,6 @@
             <!-- body: ErrorLog -->
             <div class="ErrorLog pageOverlay">
                 <div id="ErrorLogContent"></div>
-            </div>
-            <!-- body: Advanced -->
-            <div class="Advanced pageOverlay">
-                <div class="content_box">   
-                    <span class="ContentTitle">Advanced Options</span>
-                    <div class="MainMenuRow">
-                        <div class="PotProcButtons">
-                            <button type="button" class="divbutton" onclick="globalPage.show( 'Administration')" title="Administration and Settings">Administration and Settings</button>
-                            <button type="button" class="divbutton" onclick="globalPage.show( 'Developer')" title="Internal structure">Developer</button>
-                        </div>
-                        <div class="PotProcButtons">
-                            <button type="button" class="divbutton MainBold" onclick="csv()" title="CSV file (no pictures)">Download Spreadsheet</button>
-                            <button type="button" class="divbutton delete MainItalic" onclick="globalDatabase.clearLocal()">Clear local data</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- body: Administration -->
-            <div class="Administration pageOverlay">
-                <div class="content_box">   
-                    <span class="ContentTitle">Administration</span>
-                    <div class="MainMenuRow">
-                        <div class="PotProcButtons">
-                            <button type="button" class="divbutton MainItalic" onclick="globalPage.show( 'Settings' )" title="Preferences for display">Settings</button>
-                            <button type="button" class="divbutton MainItalic" onclick="globalPage.show( 'ErrorLog' )">Error Log</button>
-                        </div>
-                        <div class="PotProcButtons">
-                            <button type="button" class="divbutton" onClick="globalDatabase.fauxton()" hint="Open Couchdb Fauxton console">Database Console</button>
-                            <button type="button" class="divbutton" onclick="globalPage.show( 'DatabaseInfo' )">Database Information</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- body: Developer -->
-            <div class="Developer pageOverlay">
-                <div class="content_box">   
-                    <span class="ContentTitle">Advanced</span>
-                    <div class="MainMenuRow">
-                        <div class="PotProcButtons">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -401,7 +330,6 @@
         <!-- scripts -->
         <!-- pouchdb          --> <script               src="js/pouchdb-9.0.0.min.js"></script>
         <!-- quick-search     --> <script               src="js/pouchdb.quick-search.min.js"></script>
-        <!-- QR code          --> <script               src="js/qrious.min.js"></script>
         <!-- application code --> <script type="module" src="js/globals.js"></script>
         <!-- application code --> <script type="module" src="js/doc_data.js"></script>
         <!-- application code --> <script type="module" src="js/app.js"></script>

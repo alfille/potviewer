@@ -57,25 +57,6 @@ class PagelistThumblist extends Pagelist {
     }
 }
 
-new class Advanced extends PagelistThumblist {}() ;
-
-new class Administration extends PagelistThumblist {}() ;
-
-new class Developer extends PagelistThumblist {}() ;
-
-new class DatabaseInfo extends Pagelist {
-    show_content() {
-        new StatBox() ;
-        document.getElementById("MainPhotos").style.display="block";
-        globalDatabase.db.info()
-        .then( doc => {
-            globalPotData = new PotDataReadonly( doc, structDatabaseInfo );
-            })
-        .catch( err => globalLog.err(err) );
-    }
-
-}() ;
-
 new class RemoteDatabaseInput extends Pagelist {
     show_content() {
         new TextBox("Your Credentials") ;
@@ -91,24 +72,6 @@ new class Settings extends Pagelist {
         new TextBox("Display Settings") ;
         const doc = Object.assign( {}, globalSettings ) ;
         globalPotData = new SettingsData( doc, structSettings );
-    }
-}() ;
-
-new class MakeURL extends Pagelist {
-    show_content() {
-        new StatBox() ;
-        let url = new URL( "/index.html", window.location.href ) ;
-        if ( url.hostname == "localhost" ) {
-            url = new URL( "/index.html", globalDatabase.address ) ;
-            url.port = '';
-        }
-        ["username","password","database","address","local"].forEach( x => url.searchParams.append( x, globalDatabase[x] ) );
-        new QRious( {
-            value: url.toString(),
-            element: document.getElementById("qr"),
-            size: 300,
-        });
-        document.getElementById("MakeURLtext").href = url.toString() ;
     }
 }() ;
 
@@ -257,23 +220,6 @@ new class PotEdit extends Pagelist {
                 globalPage.show( "back" );
                 });
 
-        } else {
-            globalPage.show( "back" );
-        }
-    }
-}() ;
-
-new class PotPixLoading extends Pagelist {
-    show_content() {
-        document.querySelector(".ContentTitleHidden").style.display = "block";
-        globalPage.forget() ;
-        if ( globalPot.isSelected() ) {
-            globalDatabase.db.get( potId )
-            .then( (doc) => globalPotData = new PotData( doc, structData.Images ))
-            .catch( (err) => {
-                globalLog.err(err);
-                globalPage.show( "back" );
-                });
         } else {
             globalPage.show( "back" );
         }
