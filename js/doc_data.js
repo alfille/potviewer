@@ -12,7 +12,6 @@ export {
     PotData,
     PotDataReadonly,
     PotDataPrint,
-    PotNewData,
     SettingsData,
     DatabaseData,
 } ;
@@ -148,24 +147,6 @@ class PotDataReadonly extends PotDataRaw {
         super(false,doc,struct,true); // clicked = false, readonly=true
     }
 }    
-
-class PotNewData extends PotDataEditMode {
-    constructor( ...args) {
-        super(...args);
-    }
-    
-    savePieceData() {
-        this.loadDocData();
-        globalDatabase.db.put( this.doc )
-        .then( (response) => {
-            globalPot.select(response.id)
-            .then( () => globalPage.show( "PotMenu" ) );
-            })
-        .then( () => globalThumbs.getOne( this.doc._id ) )
-        .catch( (err) => globalLog.err(err) )
-        ;
-    }
-}
 
 class DatabaseData extends PotDataRaw {
     // starts with "EDIT" clicked

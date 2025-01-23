@@ -326,7 +326,6 @@ class DatabaseManager { // convenience class
         this.address  = null ;
         this.local    = null ;
         
-        this.remoteDB = null;
         this.problem = false ; // separates real connection problem from just network offline
         this.synctext = document.getElementById("syncstatus");
         this.db = null ;
@@ -370,8 +369,17 @@ class DatabaseManager { // convenience class
     }
     
     open() { // local
-        if ( this.database && (this.database !== "") ) {
-            this.db = new PouchDB( this.database, {auto_compaction: true} ); // open local copy
+        if ( this.username && this.password && this.database && this.address  ) {
+            this.db = new PouchDB( [this.address, this.database].join("/") , {
+                "skip_setup": "true",
+                "auth": {
+                    "username": this.username,
+                    "password": this.password,
+                    },
+                });
+        } else {
+            globalLog.err("Bad DB specification");
+            this.db = null;
         }
     }
 
@@ -384,53 +392,6 @@ class DatabaseManager { // convenience class
         this.status( "disconnect", "--network offline--" ) ;
     }
 
-    // Initialise a sync process with the remote server
-    foreverSync() {
-        document.getElementById( "userstatus" ).value = this.username;
-
-        if ( this.local=="true" ) { // local -- no sync
-            this.status("good","Local database only (no replication)");
-            return ;
-        }
-            
-        if ( this.username && this.password && this.database && this.address  ) {
-            this.remoteDB = new PouchDB( [this.address, this.database].join("/") , {
-                "skip_setup": "true",
-                "auth": {
-                    "username": this.username,
-                    "password": this.password,
-                    },
-                });
-        } else {
-            globalLog.err("Bad DB specification");
-            this.remoteDB = null;
-        }
-        if ( this.remoteDB ) {
-            this.status( "good","download remote database");
-            this.db.replicate.from( this.remoteDB )
-                .catch( (err) => this.status("problem",`Replication from remote error ${err.message}`) )
-                .finally( _ => this.syncer() );
-        } else {
-            this.status("problem","No remote database specified!");
-        }
-    }
-    
-    syncer() {
-        this.status("good","Starting database intermittent sync");
-        globalDatabase.db.sync( this.remoteDB ,
-            {
-                live: true,
-                retry: true,
-                filter: (doc) => doc._id.indexOf('_design') !== 0,
-            } )
-            .on('change', ()       => this.status( "good", "changed" ))
-            .on('paused', ()       => this.status( "good", "quiescent" ))
-            .on('active', ()       => this.status( "good", "actively syncing" ))
-            .on('denied', ()       => this.status( "problem", "Credentials or database incorrect" ))
-            .on('complete', ()     => this.status( "good", "sync stopped" ))
-            .on('error', (err)     => this.status( "problem", `Sync problem: ${err.reason}` ));
-    }
-    
     status( state, msg ) {
         switch (state) {
             case "disconnect":

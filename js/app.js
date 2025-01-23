@@ -17,7 +17,6 @@ import {
     PotDataReadonly,
     SettingsData,
     DatabaseData,
-    PotNewData,
     PotDataPrint,
 } from "./doc_data.js" ;
 
@@ -442,9 +441,6 @@ window.onload = () => {
             }
             })
         .catch( err => globalLog.err(err,"Initial search database") );
-
-        // start sync with remote database
-        globalDatabase.foreverSync();
 
 		// Show screen
 		((globalSettings.fullscreen=="always") ?

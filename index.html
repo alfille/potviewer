@@ -13,7 +13,6 @@
         <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-        <link rel="manifest" href="manifest.json">
     </head>
     <body>
         <header class="work_screen">
@@ -68,7 +67,6 @@
                     </div>
                     <!-- top: PotEdit Settings -->
                     <div class="PotData PotEdit topButtons Settings pageOverlay">
-                        <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Back</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
@@ -88,7 +86,7 @@
                     </div>
                     <!-- top: EditMode (for any of the PotData derivatives -->
                     <div class="potDataEdit pageOverlay">
-                        <button type="button" class="divbutton savedata" onclick="globalPotData.savePieceData()" title="Save your changes to the database">Save Changes</button>
+                        <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton return" onclick="globalPotData.back()" title="Do NOT save changes">Cancel</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
