@@ -156,7 +156,7 @@ ul {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(23,43,174);
+  background-color: #523693;
 }
 
 /* Modal Content (image) */
@@ -241,7 +241,7 @@ ul {
 body {
   font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.4em;
-  background: #172bae;
+  background: #523693;
   color: #250f0f;
   width: 100%;
   margin: 0 auto;
@@ -263,10 +263,6 @@ body {
 .pageOverlay {
   display: none ;
   width: 100%
-}
-
-.imageBar {
-  display:none;
 }
 .edit_data, .search {
   display: inline-block;
@@ -357,14 +353,6 @@ legend {
   font-family: inherit;
   color: white;
   border-style: groove ;
-}
-.Darray_up, .Darray_down {
-  background-color: blue;
-  color: white;
-}
-.Darray_up:hover, .Darray_down:hover {
-  background-color: white;
-  color: blue;
 }
 #FirstTimeContent p {
   margin-left: 5px;
@@ -484,22 +472,4 @@ legend {
 .splashImg {
   height:400px;
   width:auto;
-}
-#crop_buttons {
-  color: white;
-  position: absolute;
-  top: 605px;
-  left: 20px;
-}
-#under_canvas, #crop_canvas {
-  position: absolute;
-  display: block;
-  top: 0px;
-  left: 0px;
-}
-#struct_json {
-  color: white;
-  background: black;
-  padding: 1em;
-  tab-size: 4;
 }

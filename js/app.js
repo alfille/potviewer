@@ -213,7 +213,7 @@ new class PotEdit extends Pagelist {
     show_content() {
         if ( globalPot.isSelected() ) {
             globalDatabase.db.get( potId )
-            .then( (doc) => globalPotData = new PotData( doc, structData.Data ))
+            .then( (doc) => globalPotData = new PotDataReadonly( doc, structData.Data ))
              .catch( (err) => {
                 globalLog.err(err);
                 globalPage.show( "back" );
@@ -415,14 +415,8 @@ window.onload = () => {
     if ( globalDatabase.db ) {
         // Thumbnails
         globalThumbs.setup() ; // just getting canvas from doc
-
-        // Secondary indexes (create, prune and clean up views)
-        const q = new Query();
-        q.create( structData.Data.concat(structData.Images) )
-        .then( () => globalThumbs.getAll() ) // create thumbs
-        .catch( err => globalLog.err(err,"Query cleanup") )
-        ;
-
+		globalThumbs.getAll() ;
+		
         // now start listening for any changes to the database
         globalDatabase.db.changes({ 
             since: 'now', 
@@ -498,95 +492,6 @@ class StatBox extends TitleBox {
     }
 }
 
-class Query {
-    static version = 2 ; // change to force renewal (value is arbitrary)
-    constructor() {
-        this.version = `${Query.version}` ;
-    }
-    
-    create(struct) {
-        const queries = this.struct_parse(struct) ; // query entries
-        // add image statistics
-        queries.push( ({
-            _id: "_design/qPictures",
-            views: {
-                qPictures: {
-                    map: function(doc) { 
-                        emit( doc._id, ('images' in doc) ? doc.images.length : 0 ); 
-                    }.toString(), 
-                    reduce: '_stats',
-                },
-            },
-        }) );
-        return Promise.all( queries.map( (ddoc) => {
-            globalDatabase.db.get( ddoc._id )
-            .then( doc => {
-                // update if version number has changed
-                if ( this.version !== doc.version ) {
-                    ddoc._rev = doc._rev;
-                    ddoc.version = this.version ;
-                    return globalDatabase.db.put( ddoc );
-                } else {
-                    return Promise.resolve(true);
-                }
-                })
-            .catch( () => {
-                // assume because this is first time and cannot "get"
-                return globalDatabase.db.put( ddoc );
-                });
-            }))
-        .then( _ => this.prune_queries() )
-        .then( _ => globalDatabase.db.viewCleanup() )
-        .catch( (err) => globalLog.err(err) );
-    }
-    
-    struct_parse(struct) {
-        // create query definision (_design document) by parsing structure and finding:
-        // 1. Query strings
-        // 2. Query strings buried in an array (members)
-        // query gives the name of the search and it is grouped by name
-        return struct.map( e => {
-            if ( "query" in e ) { // primary query field
-                const f = `(doc) => { if ( "${e.name}" in doc ) { emit(doc.${e.name}) ; }}`;
-                return ({
-                    _id: `_design/${e.query}`,
-                    views: {
-                        [e.query]: {
-                            map: f,
-                            reduce: "_count",
-                        },
-                    },
-                }) ;
-            } else if ("members" in e) { // query field in array (or ImageArray)
-                return e.members.filter( m => "query" in m ).map( m => {
-                    const f = `(doc) => { if ( "${e.name}" in doc ){doc.${e.name}.forEach(g=> { if ( "${m.name}" in g ) { emit(g.${m.name}); }});}};`;
-                    return ({
-                        _id: `_design/${m.query}`,
-                        views: {
-                            [m.query]: {
-                                map: f,
-                                reduce: "_count",
-                            },
-                        },
-                    }) ; 
-                    }) ;
-            } else { // no query -- will filter out
-                return null ;
-            }}).flat().filter( x => x != null ) ;
-    }
-    
-    prune_queries() {
-        // remove old entries (don't match version string)
-        return globalDatabase.db.allDocs( {
-            startkey: "_design/",
-            endkey:   "_design/\uffff",
-            include_docs: true,
-        } )
-        .then( docs => docs.rows.filter( r=> r.doc.version !== this.version ) )
-        .then( rows => Promise.all( rows.map( r => globalDatabase.db.remove(r.doc)) ) ) ;
-    }
-}
-
 class Pot { // convenience class
     constructor() {
         this.TL=document.getElementById("TopLeftImage");
@@ -594,20 +499,6 @@ class Pot { // convenience class
         this.pictureSource = document.getElementById("HiddenPix");
     }
     
-    create() {
-        // create new pot record
-        return ({
-            _id: Id_pot.makeId( this.doc ),
-            type:"",
-            series:"",
-            author: globalDatabase.username,
-            artist: globalDatabase.username,
-            start_date: (new Date()).toISOString().split("T")[0],
-            stage: "greenware",
-            kiln: "none",
-           });
-    }
-   
     getAllIdDoc() {
         const doc = {
             startkey: Id_pot.allStart(),
@@ -689,29 +580,7 @@ class Id_pot {
             ].join(";");
     }
     
-    static makeIdKey( pid, key=null ) {
-        const obj = this.splitId( pid ) ;
-        if ( key==null ) {
-            obj.date = new Date().toISOString();
-            obj.rand = Math.floor( Math.random() * 1000 ) ;
-        } else {
-            obj.date = key;
-        }
-        obj.type = this.type;
-        return this.joinId( obj );
-    }
-    
-    static makeId( doc ) {
-        return [
-            this.version,
-            this.type,
-            globalDatabase.username,
-            new Date().toISOString(),
-            Math.floor( Math.random() * 1000 ),
-            ].join(";");
-    }
-    
-    static allStart() { // Search entire database
+   static allStart() { // Search entire database
         return [this.version, this.type, this.start].join(";");
     }
     

@@ -62,20 +62,7 @@ class PotDataRaw { // singleton class
     }
 
     saveChanged ( state ) {
-        const deleted_images = this.list.get_deletes() ;
-
-        const data_change = this.loadDocData() ; // also sets this.doc
-        if ( data_change ) {
-            // doc is changed
-            globalDatabase.db.put( this.doc )
-            .then( r => new Detachment( r.id, r.rev ) )
-            .then( D => D.remove( deleted_images) )
-            .then( _ => globalThumbs.getOne( this.doc._id ) )
-            .catch( (err) => globalLog.err(err) )
-            .finally( () => globalPage.show( state ) );
-        } else {
-            globalPage.show( state ) ;
-        }
+		globalPage.show( state ) ;
     }
     
     savePieceData() {
@@ -186,27 +173,6 @@ class SettingsData extends PotData {
 			}
 			globalPage.show("back") ;
 		}
-    }
-}
-
-class Detachment {
-    constructor( pid, rev ) {
-        this.pid = pid ;
-        this.rev = rev ;
-    }
-
-    remove( i_list ) {
-        if ( i_list && i_list.length>0 ) {
-            const name = i_list.pop() ;
-            return globalDatabase.db.removeAttachment( this.pid, name, this.rev )
-                .then( r => {
-                    this.rev = r.rev ;
-                    return this.remove( i_list ) ;
-                    })
-                .catch( err => globalLog(err,"Database") );
-        } else {
-            return Promise.resolve(true) ;
-        }
     }
 }
 
@@ -841,8 +807,6 @@ class ArrayEntry extends VisibleEntry {
             default:
                 tab.querySelector(".Darray_edit").hidden=false;
                 tab.querySelector(".Darray_edit").onclick=()=>this.select_edit();
-                tab.querySelector(".Darray_rearrange").hidden=false;
-                tab.querySelector(".Darray_rearrange").onclick=()=>this.rearrange();
                 break ;
         }
 
@@ -929,220 +893,7 @@ class ArrayEntry extends VisibleEntry {
             parent.appendChild(ul) ;
             }) ;
     }
-
-    swap( i1, i2 ) {
-        [this.new_val[i1],this.new_val[i2]] = [this.new_val[i2],this.new_val[i1]] ; 
-        this.rearrange() ; // show the rearrange menu again
-    }
-
-    rearrange() {
-        const parent = this.fake_page() ;
-
-        // Insert a table, and pull label into caption
-                
-        // Heading and buttons
-        cloneClass( ".Darray", parent ) ;
-        const tab = parent.querySelector( ".Darray_table" ) ;
-        tab.querySelector("span").innerHTML=`<i>${this._alias} rearrange order</i>`;
-        [".Darray_ok"].forEach(c=>tab.querySelector(c).hidden=false);
-
-        tab.querySelector(".Darray_ok").onclick=()=>{
-            this.save_enable() ;
-            this.enclosing.edit_doc();
-            };
-
-        // table
-        this.new_val.forEach( (entry) => {
-            const tr = tab.insertRow(-1) ;
-            tr.insertCell(-1).innerHTML=`<button type="button" class="Darray_up" title="Move this entry up"><B>&#8657;</B></button>`;
-            tr.insertCell(-1).innerHTML=`<button type="button"  class="Darray_down" title="Move this entry down"><B>&#8659;</B></button>`;
-            const td = tr.insertCell(-1);
-            td.style.width="100%";
-                        td.appendChild(entry.show_doc_inner());
-            });
-            
-        const elements = this.new_val.length ;
-        tab.querySelectorAll(".Darray_up"  ).forEach( (b,i)=>b.onclick=()=> this.swap( i, (i+elements-1)%elements ) ) ;
-        tab.querySelectorAll(".Darray_down").forEach( (b,i)=>b.onclick=()=> this.swap( i, (i+1)%elements )  );
-        }
-        
 }
 
 class ImageArrayEntry extends ArrayEntry {
-    find_entry(entry,type) {
-        return entry.members.find( m => m.struct.type == type ) ;
-    }
-    
-    show_image( entry ) {
-        const image = this.find_entry( entry, "image" ) ;
-        if ( image ) {
-            return image.show_item_element() ;
-        } else {
-            return document.createTextNode("No image") ;
-        }
-    }
-    
-    member_image( entry ) {
-        const crop = this.find_entry( entry, "crop" ) ;
-        return this.Images.displayClickable(
-            this.find_entry( entry, "image" ).new_val ,
-            this.new_val.length > 3 ? "small_pic" : "medium_pic" ,
-            crop ? crop.new_val : null 
-            );
-    }
-        
-                
-    show_item() {
-        // show as table with list for each member (which is a set of fields in itself)
-        const clone = document.createElement("span"); // dummy span to hold clone
-        cloneClass( ".Darray", clone ) ;
-
-        const tab = clone.querySelector( ".Darray_table" ) ;
-        tab.querySelector("span").innerHTML=`<i>Saved Images</i>`;
-        tab.querySelectorAll("button").forEach(b=>b.style.display="none");
-
-        if ( this.new_val.length > 0 ) {
-            this.new_val.forEach( entry => {
-                const tr = tab.insertRow(-1);
-                tr.insertCell(-1).appendChild( this.member_image( entry ) );                    
-                const td=tr.insertCell(-1);
-                td.style.width="100%";
-                td.appendChild(entry.show_doc_inner() );
-                });
-        } else {
-            tab.insertRow(-1).insertCell(-1).innerHTML="<i>- no entries -</i>";
-        }
-        return [tab];
-    }
-        
-    edit_item() {
-        // Insert a table, and pull label into caption
-
-        // Heading and buttons
-        const clone = document.createElement("span"); // dummy span to hold clone
-        cloneClass( ".Darray", clone ) ;
-
-        // table caption
-        const tab = clone.querySelector( ".Darray_table" ) ;
-        tab.querySelector("span").innerHTML=`<i>${this._alias} list</i>`;
-        switch ( this.new_val.length ) {
-            case 0:
-                break ;
-            case 1:
-                tab.querySelector(".Darray_edit").hidden=false;
-                tab.querySelector(".Darray_edit").onclick=()=>this.edit_array_entry( 0 );
-                break ;
-            default:
-                tab.querySelector(".Darray_edit").hidden=false;
-                tab.querySelector(".Darray_edit").onclick=()=>this.select_edit();
-                tab.querySelector(".Darray_rearrange").hidden=false;
-                tab.querySelector(".Darray_rearrange").onclick=()=>this.rearrange();
-                break ;
-        }
-
-        // table entries
-        if ( this.new_val.length > 0 ) {
-            this.new_val.forEach( (entry,i) => {
-                const tr = tab.insertRow(-1);
-                tr.insertCell(-1).appendChild( this.member_image( entry ) );
-                const td=tr.insertCell(-1);
-                td.style.width="100%";
-                td.onclick = () => this.edit_array_entry( i );
-                td.appendChild(entry.show_doc_inner() );
-                });
-        } else {
-            tab.insertRow(-1).insertCell(-1).innerHTML="<i>- no entries -</i>";
-        }
-        return [tab];
-    }
-
-    select_edit() {
-        // Insert a table, and pull label into caption
-        const parent = this.fake_page() ;
-            
-        // Heading and buttons
-        cloneClass( ".Darray", parent ) ;
-        const tab = parent.querySelector( ".Darray_table" ) ;
-        tab.querySelector("span").innerHTML=`<i>Choose ${this._alias} item</i>`;
-        [".Darray_back"].forEach(c=>tab.querySelector(c).hidden=false);
-        tab.querySelector(".Darray_back").onclick=()=>this.enclosing.edit_doc();
-
-        // table
-        this.new_val.forEach( (entry,i) => {
-            const tr = tab.insertRow(-1);
-            tr.onclick = () => this.edit_array_entry( i );
-            tr.insertCell(-1).appendChild( this.member_image( entry ) );
-            
-            const td = tr.insertCell(-1);
-            td.appendChild(entry.show_doc_inner());
-            });
-    }
-
-    rearrange() {
-        const parent = this.fake_page() ;
-
-        // Insert a table, and pull label into caption
-                
-        // Heading and buttons
-        cloneClass( ".Darray", parent ) ;
-        const tab = parent.querySelector( ".Darray_table" ) ;
-        tab.querySelector("span").innerHTML=`<i>${this._alias} rearrange order</i>`;
-        [".Darray_ok"].forEach(c=>tab.querySelector(c).hidden=false);
-
-        tab.querySelector(".Darray_ok").onclick=()=>{
-            this.save_enable();
-            this.enclosing.edit_doc();
-            };
-
-        // table
-        this.new_val.forEach( (entry) => {
-            const tr = tab.insertRow(-1) ;
-            tr.insertCell(-1).innerHTML=`<button type="button" class="Darray_up" title="Move this entry up"><B>&#8657;</B></button>`;
-            tr.insertCell(-1).innerHTML=`<button type="button"  class="Darray_down" title="Move this entry down"><B>&#8659;</B></button>`;
-                tr.insertCell(-1).appendChild( this.member_image( entry ) );
-                const td=tr.insertCell(-1);
-                td.style.width="100%";
-                td.appendChild(entry.show_doc_inner() );
-            });
-            
-        const elements = this.new_val.length ;
-        tab.querySelectorAll(".Darray_up"  ).forEach( (b,i)=>b.onclick=()=> this.swap( i, (i+elements-1)%elements ) ) ;
-        tab.querySelectorAll(".Darray_down").forEach( (b,i)=>b.onclick=()=> this.swap( i, (i+1)%elements )  );
-    }
-        
-    edit_array_entry( idx ) {
-        // image version, no add, crop enabled
-        const parent = this.fake_page() ;
-        const local_list = this.new_val[idx] ;
-
-        // controls to be added to top
-        const control_li = document.createElement('li');
-        cloneClass( ".Darray_li", control_li ) ;
-        control_li.querySelector("span").innerHTML=`<i>Edit Image</i>`;
-        control_li.classList.add("Darray_li1");
-        [".Darray_ok",".Darray_cancel",".Darray_delete"].forEach(c=>control_li.querySelector(c).hidden=false);
-        control_li.querySelector(".Darray_ok").onclick=()=>{
-            local_list.save_enable() ;
-            this.enclosing.edit_doc() ;
-        };
-        control_li.querySelector(".Darray_cancel").onclick=()=>{
-            this.save_enable();
-            this.enclosing.edit_doc();
-            };
-        control_li.querySelector(".Darray_delete").onclick=()=>{
-            if (confirm(`WARNING -- about to delete this ${this._alias} entry\nPress CANCEL to back out`)==true) {
-                this.deleted_images.push( this.find_entry( this.new_val[idx], "image" ).new_val ) ; // add image name to list
-                this.new_val.splice(idx,1); // remove image entrylist
-                this.save_enable(); // flag as change
-                this.enclosing.edit_doc(); // go back to (updated) image list
-            }
-            };
-
-        // Insert edit fields and put controls at top
-        local_list.edit_doc_inner()
-        .then( ul => {
-            ul.insertBefore( control_li, ul.children[0] );
-            parent.appendChild(ul) ;
-            }) ;
-    }
 }

@@ -407,7 +407,7 @@ class DatabaseManager { // convenience class
                 break ;
             case "good":
             default:
-                document.body.style.background="#172bae"; // heppy blue
+                document.body.style.background="#523693"; // heppy blue
                 if ( this.lastState !== state ) {
                     globalLog.err(msg,"Network status");
                 }
