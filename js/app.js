@@ -184,15 +184,6 @@ new class FirstTime extends Pagelist {
     }
 }() ;
 
-new class InvalidPiece extends Pagelist {
-    show_content() {
-        globalPage.forget() ; // don't return here
-        globalPot.unselect();
-        new StatBox() ;
-        document.getElementById("MainPhotos").style.display="block";
-    }
-}() ;
-
 new class MainMenu extends Pagelist {
     show_content() {
         globalPot.unselect();

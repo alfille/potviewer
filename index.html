@@ -9,7 +9,6 @@
         <title>PotViewer &mdash; Ceramic Artist's Work</title>
         <link rel="stylesheet" media="screen" href="style/base.css">
         <link rel="stylesheet" media="print" href="style/print.css" />
-        <link rel="manifest" href="manifest.json" />
         <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
@@ -66,14 +65,8 @@
                     </div>
                     <!-- top: Settings -->
                     <div class="Settings topButtons pageOverlay">
-						<button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
+                        <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
                         <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Back</button>
-                        <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
-                        <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
-                    </div>
-                    <!-- top: InvalidPiece -->
-                    <div class="InvalidPiece topButtons pageOverlay">
-                        <button type="button" class="divbutton return" onclick="globalPage.show( 'AllPieces' )">Return</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
@@ -198,14 +191,6 @@
                 </div>
                 <hr>
                 <div id="PotPhotos">
-                </div>
-            </div>
-            <!-- body: InvalidPiece -->
-            <div class="InvalidPiece pageOverlay">
-                <div id="InvalidPotContent" >
-                    <H2>Not a valid piece ID</H2>
-                    <p>Possble causes include your data not yet synced, or changes since this piece was selected</p>
-                    <center><button type="button" class="divbutton" onclick="globalPage.show('AllPieces')">Ok</button></center>
                 </div>
             </div>
             <!-- body: ErrorLog -->
