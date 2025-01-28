@@ -22,11 +22,11 @@ import {
 
 class Pagelist {
     // list of subclasses = displayed "pages"
-	static pages = {} ;
+    static pages = {} ;
     
-	constructor() {
-		Pagelist.pages[this.constructor.name] = this ;
-	}
+    constructor() {
+        Pagelist.pages[this.constructor.name] = this ;
+    }
 
     show_page(name) {
         // reset buttons from edit mode
@@ -67,7 +67,7 @@ new class RemoteDatabaseInput extends Pagelist {
 }() ;
 
 new class Settings extends Pagelist {
-	show_content() {
+    show_content() {
         new TextBox("Display Settings") ;
         const doc = Object.assign( {}, globalSettings ) ;
         globalPotData = new SettingsData( doc, structSettings );
@@ -109,11 +109,11 @@ new class AllPieces extends Pagelist {
 }() ;
 
 class ListGroup extends Pagelist {
-	constructor( fieldname ) {
-		super() ;
-		this.field_name = fieldname ;
-	}
-	
+    constructor( fieldname ) {
+        super() ;
+        this.field_name = fieldname ;
+    }
+    
     // "field_name" from struct in derived classes
     show_content() {
         globalPot.unselect() ;
@@ -158,13 +158,13 @@ class ListGroup extends Pagelist {
     }
 }
 
-new class ListSeries extends ListGroup {}("series") ;
-new class ListForm extends ListGroup {}("type") ;
+new class ListSeries extends ListGroup       {}("series") ;
+new class ListForm extends ListGroup         {}("type") ;
 new class ListConstruction extends ListGroup {}("construction") ;
-new class ListStage extends ListGroup {}("stage") ;
-new class ListKiln extends ListGroup {}("kiln") ;
-new class ListGlaze extends ListGroup {}("glaze") ;
-new class ListClay extends ListGroup {}("clay") ;
+new class ListStage extends ListGroup        {}("stage") ;
+new class ListKiln extends ListGroup         {}("kiln") ;
+new class ListGlaze extends ListGroup        {}("glaze") ;
+new class ListClay extends ListGroup         {}("clay")
 
 new class ErrorLog extends Pagelist {
     show_content() {
@@ -221,8 +221,8 @@ new class PotMenu extends Pagelist {
         if ( globalPot.isSelected() ) {
             globalDatabase.db.get( potId )
             .then( (doc) => {
-                globalPot.select(potId) // update thumb
-                .then( () => globalPot.showPictures(doc) ) ; // pictures on bottom
+                globalPot.select(potId) ; // update thumb
+                globalPot.showPictures(doc) ; // pictures on bottom
             })
             .catch( (err) => {
                 globalLog.err(err);
@@ -323,18 +323,18 @@ class Page { // singleton class
         globalTable = null;
         document.querySelector(".ContentTitleHidden").style.display = "none";
 
-        this.show_normal(); // basic page display setup
+        this.normal_display(); // basic page display setup
 
         // send to page-specific code
         const target_name = this.current() ;
         if ( target_name in Pagelist.pages ) {
-			Pagelist.pages[target_name].show_page(target_name) ;
-		} else {
-			this.back() ;
-		}
+            Pagelist.pages[target_name].show_page(target_name) ;
+        } else {
+            this.back() ;
+        }
     }
     
-    show_normal() { // switch between screen and print
+    normal_display() { // switch between screen and print
         if ( this.normal_screen ) {
             return ;
         }
@@ -347,7 +347,7 @@ class Page { // singleton class
         document.querySelectorAll(".print_screen").forEach( v => v.style.display="none" ) ;
     }    
 
-    show_print() { // switch between screen and print
+    print_display() { // switch between screen and print
         if ( !this.normal_screen ) {
             return ;
         }
@@ -370,12 +370,6 @@ class Page { // singleton class
             window.location.href="/index.html"; // force reload
         }
     }
-
-    copy_to_clip() {
-        navigator.clipboard.writeText( document.getElementById("MakeURLtext").href )
-        .catch( err => globalLog.err(err) );
-    }
-    
 }
 
 globalPage = new Page();
@@ -406,8 +400,8 @@ window.onload = () => {
     if ( globalDatabase.db ) {
         // Thumbnails
         globalThumbs.setup() ; // just getting canvas from doc
-		globalThumbs.getAll() ;
-		
+        globalThumbs.getAll() ;
+        
         // now start listening for any changes to the database
         globalDatabase.db.changes({ 
             since: 'now', 
@@ -427,11 +421,11 @@ window.onload = () => {
             })
         .catch( err => globalLog.err(err,"Initial search database") );
 
-		// Show screen
-		((globalSettings.fullscreen=="always") ?
-			document.documentElement.requestFullscreen()
-			: Promise.resolve())
-		.finally( _ => globalPage.show("MainMenu") ) ;
+        // Show screen
+        ((globalSettings.fullscreen=="always") ?
+            document.documentElement.requestFullscreen()
+            : Promise.resolve())
+        .finally( _ => globalPage.show("MainMenu") ) ;
         
     } else {
         globalPage.reset();
@@ -479,7 +473,7 @@ class StatBox extends TitleBox {
         super();
         globalDatabase.db.query("qPictures", { reduce:true, group: false })
         .then( stat => this.show( `Pieces: ${stat.rows[0].value.count}, Pictures: ${stat.rows[0].value.sum}` ) )
-        .catch( err => globalLog.err(err) );
+        .catch( this.show( "No data yet" ) );
     }
 }
 
@@ -503,17 +497,9 @@ class Pot { // convenience class
     select( pid = potId ) {
         potId = pid ;
         // Check pot existence
-        return globalDatabase.db.get( pid )
-        .then( (doc) => {
-            // Top left Logo
-            globalThumbs.displayThumb( this.TL, pid ) ;
-            new PotBox(doc);
-            return doc ;
-            })
-        .catch( (err) => {
-            globalLog.err(err,"pot select");
-            this.unselect();
-            });
+        // Top left Logo
+        globalThumbs.displayThumb( this.TL, pid ) ;
+        new TextBox("Piece Selected");
     }
 
     isSelected() {
@@ -645,11 +631,11 @@ class PotImages {
                         } ;
                     document.getElementById("modal_close").onclick=()=>{
                         screen.orientation.onchange=()=>{};
-						if (globalSettings.fullscreen=="big_picture") {
-							if ( document.fullscreenElement ) {
-								document.exitFullscreen() ;
-							}
-						}
+                        if (globalSettings.fullscreen=="big_picture") {
+                            if ( document.fullscreenElement ) {
+                                document.exitFullscreen() ;
+                            }
+                        }
                         document.getElementById('modal_id').style.display='none';
                         };
                     document.getElementById("modal_down").onclick=()=> {
@@ -671,9 +657,9 @@ class PotImages {
                             });
                         }) ;
                     } ;
-					((globalSettings.fullscreen=="big_picture") ?
-						document.documentElement.requestFullscreen()
-						: Promise.resolve() )
+                    ((globalSettings.fullscreen=="big_picture") ?
+                        document.documentElement.requestFullscreen()
+                        : Promise.resolve() )
                     .finally( _ => {
                         img2.src=url2;
                         document.getElementById("modal_caption").innerText=this.images.find(e=>e.image==name).comment;
@@ -772,8 +758,8 @@ class Thumb {
                         this.displayThumb( img, pid ) ;
                         img.classList.add("MainPhoto");
                         img.onclick = () => {
-                            globalPot.select( pid )
-                            .then( () => globalPage.show("PotMenu") ) ;
+                            globalPot.select( pid ) ;
+                            globalPage.show("PotMenu") ;
                         } ;
                         this.pick.appendChild( img ) ;
                         img.alt = pid ;
@@ -813,8 +799,8 @@ class Thumb {
                     this.displayThumb( img, pid ) ;
                     img.classList.add("MainPhoto");
                     img.onclick = () => {
-                        globalPot.select( pid )
-                        .then( () => globalPage.show("PotMenu") ) ;
+                        globalPot.select( pid ) ;
+                        globalPage.show("PotMenu") ;
                     } ;
                     this.pick.appendChild( img ) ;
                     img.alt = pid ;
@@ -1227,8 +1213,8 @@ class SearchTable extends ThumbTable {
     
     // for search -- go to a result of search
     selectandedit( id, page ) {
-        globalPot.select(id)
-        .then( () => globalPage.show( page ) ) ;
+        globalPot.select(id) ;
+        globalPage.show( page ) ;
     }
 }
 
@@ -1270,56 +1256,68 @@ class Search { // singleton class
             return this.resetTable();
         }
         globalDatabase.db.search(
-                        { 
-                                query: needle,
-                                fields: this.fields,
-                                highlighting: true,
-                                mm: "80%",
-                        })
-                .then( x => x.rows.map( r =>
-                        Object.entries(r.highlighting)
-                        .map( ([k,v]) => ({
-                                        _id:r.id,
-                                        Field:this.field_alias[k],
-                                        Text:v,
-                                        Link:this.field_link[k],
-                                })
-                                )) 
-                        )
-                .then( res => res.flat() )
+            { 
+                    query: needle,
+                    fields: this.fields,
+                    highlighting: true,
+                    mm: "80%",
+            })
+        .then( x => x.rows.map( r =>
+            Object.entries(r.highlighting)
+            .map( ([k,v]) => ({
+                    _id:r.id,
+                    Field:this.field_alias[k],
+                    Text:v,
+                    Link:this.field_link[k],
+                    })
+                )) 
+            .flat()
+            .map( r=>({doc:r})) )
+        .then( x => x.rows.map( r =>
+            Object.entries(r.highlighting)
+            .map( ([k,v]) => ({
+                _id:r.id,
+                Field:this.field_alias[k],
+                Text:v,
+                Link:this.field_link[k],
+                })
+            )) ) 
+        .then( res => res.flat() )
         .then( res => res.map( r=>({doc:r}))) // encode as list of doc objects
         .then( res=>this.setTable(res)) // fill the table
+/*
         .catch(err=> {
             globalLog.err(err);
             this.resetTable();
             });
+            * */ ;
     }
 
     setTable(docs=[]) {
         globalTable.fill(docs);
     }
 
-        structParse( struct ) {
-                return struct
-                .filter( e=>!(['date','image'].includes(e.type)))
-                .map(e=>{
-                        const name=e.name;
-                        const alias=e?.alias??name;
-                        if ( ['array','image_array'].includes(e.type) ) {
-                                return this.structParse(e.members)
-                                .map(o=>({name:[name,o.name].join("."),alias:[alias,o.alias].join(".")})) ;
-                        } else {
-                                return ({name:name,alias:alias});
-                        }
-                        })
-                .flat();
-        }
+    structParse( struct ) {
+        return struct
+        .filter( e=>!(['date','image'].includes(e.type)))
+        .map(e=>{
+            const name=e.name;
+            const alias=e?.alias??name;
+            if ( ['array','image_array'].includes(e.type) ) {
+                return this.structParse(e.members)
+                .map(o=>({name:[name,o.name].join("."),alias:[alias,o.alias].join(".")})) ;
+            } else {
+                return ({name:name,alias:alias});
+            }
+            })
+        .flat();
+    }
         
-        structFields( struct ) {
-                const sP = this.structParse( struct ) ;
-                sP.forEach( o => this.field_alias[o.name]=o.alias );
-                return sP.map( o => o.name ) ;
-        }
+    structFields( struct ) {
+        const sP = this.structParse( struct ) ;
+        sP.forEach( o => this.field_alias[o.name]=o.alias );
+        return sP.map( o => o.name ) ;
+    }
 }
 
 // Set up text search

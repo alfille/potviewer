@@ -190,7 +190,7 @@ class PotDataPrint { // singleton class
         this.list.load_from_doc( this.doc ) ;
 
         this.list.print_doc() ;
-        globalPage.show_print();
+        globalPage.print_display();
         setTimeout( this.print, 1000 ) ;
     }
 

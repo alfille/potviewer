@@ -382,7 +382,6 @@ class DatabaseManager { // convenience class
             this.db = null;
         }
     }
-
     
     present() {
         this.status( "good", "--network present--" ) ;
@@ -437,25 +436,8 @@ class DatabaseManager { // convenience class
         }
         return [prot,[addr,port].join(":")].join("://");
     }
-
-    // Fauxton link
-    fauxton() {
-        window.open( `${globalDatabase.address}/_utils`, '_blank' );
-    }
-    
-    clearLocal() {
-        const remove = confirm("Remove the eMission data and your credentials from this device?\nThe central database will not be affected.") ;
-        if ( remove ) {
-            globalStorage.clear();
-            // clear (local) database
-            globalDatabase.db.destroy()
-            .finally( _ => location.reload() ); // force reload
-        } else {
-            globalPage.show( "MainMenu" );
-        }
-    }
-
 }
+
 globalDatabase = new DatabaseManager() ;
 
 class Cookie { //convenience class
