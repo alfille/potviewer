@@ -162,9 +162,9 @@
             </div>
             <!-- body: SearchList -->
             <div class="SearchList pageOverlay">
-                <span class="ContentTitle">Search for...</span>
+                <span class="ContentTitle" id="searchTitle">Search for...</span>
                 <div id="searchbar">
-                    <input type="search" id="searchtext" autofocus="true" value="" onsearch="globalSearch.toTable()">
+                    <input type="search" id="searchtext" autofocus="true" value="" onsearch="globalSearch.toTable()" oninput="globalSearch.title('Enter search words')" title="Enter words to search for">
                     <button type="button" id="searchclick" onclick="globalSearch.toTable()">Search</button>
                 </div>
                 <div id="SearchListContent" >

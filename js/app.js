@@ -238,6 +238,7 @@ new class PotMenu extends Pagelist {
 new class SearchList extends Pagelist {
     show_content() {
         globalPot.unselect() ;
+        globalSearch.title("Enter search words");
         new StatBox() ;
         document.getElementById("MainPhotos").style.display="block";
         globalTable = new SearchTable() ;
@@ -1224,67 +1225,93 @@ class Search { // singleton class
 
         this.field_alias={} ;
         this.field_link={} ;
-                this.fields = [] ;
+        this.fields = [] ;
 
         this.structStructure= ({
-                        PotEdit:    structData.Data,
-                        PotMenu:     structData.Images,
-                        });
+            PotEdit:    structData.Data,
+            PotMenu:     structData.Images,
+            });
 
         // Extract fields fields
         Object.entries(this.structStructure).forEach( ([k,v]) =>
-                        this.structFields(v)
-                        .forEach( fn => {
-                                this.field_link[fn]=k ;
-                                this.fields.push(fn);
-                                })
-                        );
+            this.structFields(v)
+            .forEach( fn => {
+                this.field_link[fn]=k ;
+                this.fields.push(fn);
+                })
+            );
     }
 
     resetTable () {
         this.setTable([]);
+        this.title("Enter search words");
     } 
 
     select(id) {
         this.select_id = id;
     }
 
+    searchField( re, field ) {
+        if ( Array.isArray( field ) ) {
+            const f = field.join(", ");
+            if ( f.match(re) ) {
+                return f ;
+            } else {
+                return null ;
+            }
+        } else {
+            if ( field.match(re) ) {
+                return field ;
+            } else {
+                return null ;
+            }
+        }
+    }
+
+    searchDoc( re, doc ) {
+        const found = [] ;
+        this.fields
+        .map( f => f.split(".") )
+        .filter( fs => fs[0] in doc )
+        .forEach( fs => {
+            if ( fs[1] && Array.isArray(doc[fs[0]]) ) {
+                doc[fs[0]]
+                .forEach( e => {
+                    const x = this.searchField( re, e[fs[1]]??"" ) ;
+                    if ( x ) {
+                        found.push([fs.join("."),x]);
+                    }
+                }) ;
+            } else {
+                const x = this.searchField( re, doc[fs[0]]??"" ) ;
+                if ( x ) {
+                    found.push([fs[0],x]) ;
+                }
+            }
+        });
+        return found ;
+    }
+        
     toTable() {
+        this.title("Searching...") ;
         const needle = document.getElementById("searchtext").value;
 
         if ( needle.length == 0 ) {
             return this.resetTable();
         }
-        globalDatabase.db.search(
-            { 
-                    query: needle,
-                    fields: this.fields,
-                    highlighting: true,
-                    mm: "80%",
-            })
-        .then( x => x.rows.map( r =>
-            Object.entries(r.highlighting)
-            .map( ([k,v]) => ({
-                    _id:r.id,
-                    Field:this.field_alias[k],
-                    Text:v,
-                    Link:this.field_link[k],
-                    })
-                )) 
-            .flat()
-            .map( r=>({doc:r})) )
-        .then( x => x.rows.map( r =>
-            Object.entries(r.highlighting)
-            .map( ([k,v]) => ({
-                _id:r.id,
-                Field:this.field_alias[k],
-                Text:v,
-                Link:this.field_link[k],
-                })
-            )) ) 
-        .then( res => res.flat() )
-        .then( res => res.map( r=>({doc:r}))) // encode as list of doc objects
-        .then( res=>this.setTable(res)) // fill the table
+        const re = new RegExp(needle,"i");
+        const fill = [] ;
+        
+        globalPot.getAllIdDoc()
+        .then( doclist => doclist.rows.forEach( r =>
+            this.searchDoc( re, r.doc ).forEach( f => fill.push({doc:{
+                _id: r.id,
+                Field: this.field_alias[f[0]],
+                Text: f[1],
+                Link: this.field_link[f[0]],
+                }}))
+                ))
+        .then( _=>this.setTable(fill)) // fill the table
 /*
         .catch(err=> {
             globalLog.err(err);
@@ -1294,7 +1321,12 @@ class Search { // singleton class
     }
 
     setTable(docs=[]) {
+        this.title("Search results");
         globalTable.fill(docs);
+    }
+
+    title( text ) {
+        document.getElementById("searchTitle").innerText = text ;
     }
 
     structParse( struct ) {

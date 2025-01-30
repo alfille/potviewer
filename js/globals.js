@@ -234,12 +234,12 @@ globalThis.structSettings = [
         choices: ["png","jpeg","webp"],
     },
     {
-		name: "fullscreen",
-		alias: "Display full screen",
-		hint: "Hide browser meniu choices",
-		type: "radio",
-		choices: ["never","big_picture","always"],
-	}
+        name: "fullscreen",
+        alias: "Display full screen",
+        hint: "Hide browser meniu choices",
+        type: "radio",
+        choices: ["never","big_picture","always"],
+    }
 ] ;
 
 // globals cookie backed
@@ -328,7 +328,7 @@ class DatabaseManager { // convenience class
         
         this.problem = false ; // separates real connection problem from just network offline
         this.synctext = document.getElementById("syncstatus");
-        this.db = null ;
+        this.db = null ; // set only by FirstTime or storage
         
     }
     
@@ -382,7 +382,7 @@ class DatabaseManager { // convenience class
             this.db = null;
         }
     }
-    
+
     present() {
         this.status( "good", "--network present--" ) ;
     }
