@@ -205,7 +205,8 @@ new class PotEdit extends Pagelist {
         if ( globalPot.isSelected() ) {
             globalDatabase.db.get( potId )
             .then( (doc) => globalPotData = new PotDataReadonly( doc, structData.Data ))
-             .catch( (err) => {
+            .then( _=> globalThumbs.displayThumb( document.getElementById("TopLeftImage"), potId ) ) 
+            .catch( (err) => {
                 globalLog.err(err);
                 globalPage.show( "back" );
                 });
@@ -221,13 +222,17 @@ new class PotMenu extends Pagelist {
         if ( globalPot.isSelected() ) {
             globalDatabase.db.get( potId )
             .then( (doc) => {
-                globalPot.select(potId) ; // update thumb
+                globalPot.select(potId) ;
+                globalThumbs.displayThumb( document.getElementById("ThumbImage"), potId ) ;
+                document.getElementById("TopLeftImage").src = document.getElementById("LogoPicture").src;
                 globalPot.showPictures(doc) ; // pictures on bottom
             })
+/*
             .catch( (err) => {
                 globalLog.err(err);
                 globalPage.show( "back" );
                 })
+*/
                 ;
         } else {
             globalPage.show( "back" );
@@ -362,13 +367,13 @@ class Page { // singleton class
     }    
 
     headerLink() {
-        if ( globalPage.current() != "MainMenu" ) {
-            globalPage.show("MainMenu") ;
-        } else {
-            if ( globalPage ) {
-                globalPage.reset();
-            }
-            window.location.href="/index.html"; // force reload
+        switch ( globalPage.current() ) {
+            case "PotEdit":
+                globalPage.show( "PotMenu" ) ;
+                break ;
+            default:
+                globalPage.show("MainMenu") ;
+                break ;
         }
     }
 }
@@ -480,8 +485,6 @@ class StatBox extends TitleBox {
 
 class Pot { // convenience class
     constructor() {
-        this.TL=document.getElementById("TopLeftImage");
-        this.LOGO = document.getElementById("LogoPicture");
         this.pictureSource = document.getElementById("HiddenPix");
     }
     
@@ -498,8 +501,7 @@ class Pot { // convenience class
     select( pid = potId ) {
         potId = pid ;
         // Check pot existence
-        // Top left Logo
-        globalThumbs.displayThumb( this.TL, pid ) ;
+        //globalThumbs.displayThumb( this.TL, pid ) ;
         new TextBox("Piece Selected");
     }
 
@@ -509,7 +511,7 @@ class Pot { // convenience class
 
     unselect() {
         potId = null;
-        this.TL.src = this.LOGO.src;
+        document.getElementById("TopLeftImage").src = document.getElementById("LogoPicture").src;
         if ( globalPage.isThis("AllPieces") ) {
             const pt = document.getElementById("PotTable");
             if ( pt ) {
