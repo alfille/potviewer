@@ -59,7 +59,7 @@
                     </div>
                     <!-- top: PotEdit -->
                     <div class="PotEdit topButtons pageOverlay">
-                        <button type="button" class="divbutton discarddata return" onclick="globalPage.show( 'back' )" title="Return to previous page">Cancel</button>
+                        <button type="button" class="divbutton return" onclick="globalPage.show( 'back' )" title="Return to previous page">Back</button>
                         <button type="button" class="divbutton Search" onclick="globalPage.show( 'SearchList' )" title="Full text search">Find &#x1F50E;&#xFE0E;</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
@@ -79,7 +79,7 @@
                     </div>
                     <!-- top: EditMode (for any of the PotData derivatives -->
                     <div class="potDataEdit pageOverlay">
-                        <button type="button" class="divbutton edit_data" onclick="globalPotData.edit_doc()" title="Start editing these entries">Edit</button>
+                        <button type="button" class="divbutton savedata" onclick="globalPotData.savePieceData()" title="Save your changes to the database">Save Changes</button>
                         <button type="button" class="divbutton return" onclick="globalPotData.back()" title="Do NOT save changes">Cancel</button>
                         <button type="button" class="divbutton" onclick="globalPage.helpLink()">Help</button>
                     </div>
@@ -249,7 +249,6 @@
                             <span class="Darray_span"></span>
                             <button type="button" class="Darray_add" title="Add a new entry to the list" hidden>Add</button>
                             <button type="button" class="Darray_edit" title="Modify (or delete) a list entry" hidden>Modify</button>
-                            <button type="button" class="Darray_crop" title="Crop this image" hidden>Crop</button>
                             <button type="button" class="Darray_ok" title="Keep this change" hidden>Ok</button>
                             <button type="button" class="Darray_delete delete" title="Delete this entry" hidden>Delete</button>
                             <button type="button" class="Darray_cancel return" title="Cancel any changes" hidden>Cancel</button>
@@ -264,7 +263,6 @@
                     <span class="Darray_span"></span>
                     <button type="button" class="Darray_add" title="Add a new entry to the list" hidden>Add</button>
                     <button type="button" class="Darray_edit" title="Modify (or delete) a list entry" hidden>Edit</button>
-                    <button type="button" class="Darray_crop" title="Crop this image" hidden>Crop</button>
                     <button type="button" class="Darray_ok" title="Keep this change" hidden>Ok</button>
                     <button type="button" class="Darray_delete delete" title="Delete this entry" hidden>Delete</button>
                     <button type="button" class="Darray_cancel return" onClick="globalPotData.cancelArray()" title="Cancel any changes" hidden>Cancel</button>
@@ -296,10 +294,10 @@
             <a href="?reset=true">Reset everything (local data and credentials)</a><hr>
             <b><center>
             <h1>PotHolder</h1>
-            <img src="images/pot400.jpg" class="splashImg" alt="PotHolder &mdash; Ceramic Project Tracker" loading="lazy">
+            <img src="images/pot400.jpg" class="splashImg" alt="PotViewer &mdash; Ceramic Project Tracker" loading="lazy">
             <hr>
                 If the application does not appear, contact:.<br>
-                <a href="mailto:palfille@partners.org?subject=Potholder error">PotHolder team</a>
+                <a href="mailto:palfille@partners.org?subject=PotViewer error">PotHolder team</a>
             <hr>
             </center></b>
         </div>
@@ -313,7 +311,6 @@
        
         <!-- scripts -->
         <!-- pouchdb          --> <script               src="js/pouchdb-9.0.0.min.js"></script>
-        <!-- quick-search     --> <script               src="js/pouchdb.quick-search.min.js"></script>
         <!-- application code --> <script type="module" src="js/globals.js"></script>
         <!-- application code --> <script type="module" src="js/doc_data.js"></script>
         <!-- application code --> <script type="module" src="js/app.js"></script>

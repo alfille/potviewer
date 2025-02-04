@@ -918,8 +918,7 @@ class SortTable {
             const record = doc.doc;
             row.setAttribute("data-id",record._id);
             /* Select and edit -- need to make sure selection is complete*/
-            ['click']
-            .forEach( (e) => row.addEventListener( e, () => this.selectandedit( record._id ) ) ) ;
+            row.onclick = () => this.selectandedit( record._id ) ;
             this.collist.forEach( (colname,i) => {
                 const c = row.insertCell(i);
                 c.innerHTML=(this.aliases[colname].value)(record) ;
@@ -1033,8 +1032,7 @@ class ThumbTable extends SortTable {
             const record = doc.doc;
             row.setAttribute("data-id",record._id);
             /* Select and edit -- need to make sure selection is complete*/
-            ['click']
-            .forEach( (e) => row.addEventListener( e, () => this.selectandedit( record._id ) ) ) ;
+            row.onclick = () => this.selectandedit( record._id ) ;
             // thumb
             const img = new Image(100,100);
             globalThumbs.displayThumb( img, record._id ) ;
@@ -1188,8 +1186,7 @@ class SearchTable extends ThumbTable {
             const record = doc.doc;
             row.setAttribute("data-id",record._id);
             /* Select and edit -- need to make sure selection is complete*/
-            ['click']
-            .forEach( (e) => row.addEventListener( e, () => this.selectandedit( record._id, record.Link ) ) ) ;
+            row.onclick = () => this.selectandedit( record._id, record.Link ) ;
             // thumb
             const img = new Image(100,100);
             globalThumbs.displayThumb( img, record._id ) ;

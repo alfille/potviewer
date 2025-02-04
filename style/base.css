@@ -323,7 +323,6 @@ legend {
 .PotDataContent {
     width: 100%;
 }
-
 .Darray_table {
   border: 3px solid black;
   width: 100%;
@@ -392,9 +391,6 @@ legend {
 .PotProcButtons {
   display: flex;
   flex-direction: column;
-}
-#InvalidPotContent {
-    padding: 5px ;
 }
 .PotData input {
     background: #F6F6F6 ;
